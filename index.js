@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const salariesRouter = require("./routes/salaries");
 const employeesRouter = require("./routes/employees");
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const app = express();
 
