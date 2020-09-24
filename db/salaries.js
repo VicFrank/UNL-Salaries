@@ -1,4 +1,3 @@
-const { create } = require("../../path-of-guardians/db/games");
 const { query } = require("./index");
 
 module.exports = {
