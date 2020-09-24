@@ -1,6 +1,10 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
+      <v-toolbar-title>
+        <v-btn to="/" text>Salaries</v-btn>
+        <v-btn to="/departments" text>Departments</v-btn>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-btn href="http://www.dailynebraskan.com" target="_blank" text>
@@ -11,23 +15,14 @@
 
     <v-main>
       <v-container>
-        <Employees />
+        <router-view></router-view>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Employees from "./components/Employees";
 export default {
   name: "App",
-
-  components: {
-    Employees,
-  },
-
-  data: () => ({
-    //
-  }),
 };
 </script>

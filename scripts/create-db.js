@@ -13,6 +13,8 @@ function stringToNumber(inputString) {
   const records = parse(content);
   let i = 0;
 
+  let promises = [];
+
   for (record of records) {
     i++;
 
@@ -24,16 +26,26 @@ function stringToNumber(inputString) {
     const state_aided_salary = stringToNumber(record[5]);
     const other_funds_salary = stringToNumber(record[6]);
 
-    await salaries.create(
-      employee,
-      position,
-      campus,
-      department,
-      budgeted_salary,
-      state_aided_salary,
-      other_funds_salary
-    );
+    const names = employee.split(", ");
+    const lastName = names[0];
+    const restOfName = names[1];
 
-    console.log(`Added record ${i}`);
+    const fullName = `${restOfName} ${lastName}`;
+
+    promises.push(
+      await salaries.create(
+        fullName,
+        position,
+        campus,
+        department,
+        budgeted_salary,
+        state_aided_salary,
+        other_funds_salary
+      )
+    );
   }
+
+  console.time("write to DB");
+  Promise.all(promises);
+  console.timeEnd("write to DB");
 })();

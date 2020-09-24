@@ -104,6 +104,20 @@ module.exports = {
     }
   },
 
+  async getEmployees() {
+    try {
+      const { rows } = await query(
+        `
+        SELECT DISTINCT(full_name) FROM salaries ORDER BY full_name
+      `
+      );
+
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   async getAllPositionsFromCampus(campus, count = 20) {
     try {
       const { rows } = await query(
@@ -124,6 +138,26 @@ module.exports = {
     }
   },
 
+  async getDepartmentsInfo() {
+    try {
+      const { rows } = await query(
+        `
+        SELECT
+        department_name,
+        count(DISTINCT(full_name)) as num_employees,
+        sum(budgeted_salary) as total_salary,
+        ROUND(sum(budgeted_salary)::Decimal / count(DISTINCT(full_name))) as avg_salary
+        FROM salaries GROUP BY department_name
+        ORDER BY total_salary DESC;
+      `
+      );
+
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   async getEmployeeData(name) {
     try {
       const salaries = await this.getEmployeeSalaries(name);
@@ -134,6 +168,24 @@ module.exports = {
         total_salary,
         salaries,
       };
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async getDepartmentSalaries(department) {
+    try {
+      const { rows } = await query(
+        `
+        SELECT *
+        FROM salaries
+        WHERE department_name = $1
+        ORDER BY budgeted_salary DESC
+      `,
+        [department]
+      );
+
+      return rows;
     } catch (error) {
       throw error;
     }
@@ -175,9 +227,9 @@ module.exports = {
         `
       SELECT 
         full_name,
-        string_agg(DISTINCT(campus_name), ', ') as campuses,
-        string_agg(DISTINCT(department_name), ', ') as departments,
-        string_agg(position_name, ', ') as positions,
+        array_agg(DISTINCT(campus_name)) as campuses,
+        array_agg(DISTINCT(department_name)) as departments,
+        array_agg(position_name) as positions,
         sum(budgeted_salary) as total_salary,
         sum(state_salary) as total_state_salary,
         sum(other_salary) as total_other_salary

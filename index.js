@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 const salariesRouter = require("./routes/salaries");
+const employeesRouter = require("./routes/employees");
 
 const port = process.env.PORT || 3000;
 
@@ -29,6 +30,7 @@ app.use(
 // app.use(express.static(path.join(__dirname, "client/dist")));
 
 app.use("/api/salaries", salariesRouter);
+app.use("/api/employees", employeesRouter);
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname + "/client/dist/index.html"));
