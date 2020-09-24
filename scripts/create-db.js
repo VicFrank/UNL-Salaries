@@ -45,7 +45,6 @@ function stringToNumber(inputString) {
     );
   }
 
-  console.time("write to DB");
   Promise.all(promises);
-  console.timeEnd("write to DB");
+  console.log("done");
 })();
