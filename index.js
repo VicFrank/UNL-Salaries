@@ -27,14 +27,14 @@ app.use(
   })
 );
 
-// app.use(express.static(path.join(__dirname, "client/dist")));
+app.use(express.static(path.join(__dirname, "client/dist")));
 
 app.use("/api/salaries", salariesRouter);
 app.use("/api/employees", employeesRouter);
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname + "/client/dist/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/dist/index.html"));
+});
 
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}.`);
