@@ -2,7 +2,10 @@
   <v-data-table
     :headers="headers"
     :items="salaries"
-    :items-per-page="20"
+    :items-per-page="15"
+    :footer-props="{
+      itemsPerPageOptions: [15, 25, 100, -1],
+    }"
     class="elevation-1 mt-3 table"
   >
     <template v-slot:[full_name]="{ item }">
@@ -18,9 +21,10 @@
       parseCampuses(item.campuses)
     }}</template>
     <template v-slot:[departments]="{ item }">
-      <router-link :to="`/departments/${item.departments[0]}`">{{
-        item.departments[0]
-      }}</router-link>
+      <router-link
+        :to="`/departments/${item.departments[0]}-${item.campuses[0]}`"
+        >{{ item.departments[0] }}</router-link
+      >
     </template>
   </v-data-table>
 </template>

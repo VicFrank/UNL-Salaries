@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center">{{department_name}}</h1>
+    <h1 class="text-center">{{ departmentName }} {{ campusName }}</h1>
     <v-data-table
       :headers="headers"
       :items="salaries"
@@ -8,7 +8,14 @@
       hide-default-footer
       class="elevation-1 mt-3 table"
     >
-      <template v-slot:[budgeted_salary]="{ item }">{{ item.budgeted_salary | dollarize }}</template>
+      <template v-slot:[full_name]="{ item }">
+        <router-link :to="`/employees/${item.full_name}`">{{
+          item.full_name
+        }}</router-link>
+      </template>
+      <template v-slot:[budgeted_salary]="{ item }">{{
+        item.budgeted_salary | dollarize
+      }}</template>
     </v-data-table>
   </div>
 </template>
@@ -24,7 +31,6 @@ export default {
           align: "start",
           value: "full_name",
         },
-        { text: "Campus", value: "campus_name" },
         { text: "Position", value: "position_name", align: "right" },
         { text: "Salary", value: "budgeted_salary", align: "right" },
       ],
@@ -32,16 +38,27 @@ export default {
   },
 
   computed: {
-    department_name() {
+    name() {
       return this.$route.params.name;
+    },
+    campusName() {
+      return this.name.split("-")[0];
+    },
+    departmentName() {
+      return this.name.split("-")[1];
     },
     budgeted_salary() {
       return "item.budgeted_salary";
     },
+    full_name() {
+      return "item.full_name";
+    },
   },
 
   created() {
-    fetch(`/api/salaries/departments/${this.department_name}`)
+    if (!this.campusName || !this.departmentName) this.$router.push(`/404`);
+
+    fetch(`/api/salaries/departments/${this.name}`)
       .then((res) => res.json())
       .then((salaries) => {
         this.salaries = salaries;

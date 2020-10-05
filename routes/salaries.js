@@ -8,7 +8,7 @@ let cache = apicache.middleware;
 
 router.get("/", cache("1 day"), async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit) || 1000;
+    const limit = parseInt(req.query.limit) || 100000;
     const offset = parseInt(req.query.offset) || 0;
     const campus = parseInt(req.query.campus);
     const department = parseInt(req.query.department);
@@ -39,8 +39,13 @@ router.get("/departments", cache("1 day"), async (req, res) => {
 
 router.get("/departments/:name", cache("1 day"), async (req, res) => {
   try {
-    const name = req.params.name;
-    const rows = await salaries.getDepartmentSalaries(name);
+    const names = req.params.name.split("-");
+    const department = names[0];
+    const campus = names[1];
+
+    if (!department || !campus) return res.status(200).json(null);
+
+    const rows = await salaries.getDepartmentSalaries(department, campus);
     res.status(200).json(rows);
   } catch (error) {
     console.log(error);

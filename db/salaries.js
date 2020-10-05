@@ -143,10 +143,11 @@ module.exports = {
         `
         SELECT
         department_name,
+        campus_name,
         count(DISTINCT(full_name)) as num_employees,
         sum(budgeted_salary) as total_salary,
         ROUND(sum(budgeted_salary)::Decimal / count(DISTINCT(full_name))) as avg_salary
-        FROM salaries GROUP BY department_name
+        FROM salaries GROUP BY department_name, campus_name
         ORDER BY total_salary DESC;
       `
       );
@@ -172,16 +173,16 @@ module.exports = {
     }
   },
 
-  async getDepartmentSalaries(department) {
+  async getDepartmentSalaries(department, campus) {
     try {
       const { rows } = await query(
         `
         SELECT *
         FROM salaries
-        WHERE department_name = $1
+        WHERE department_name = $1 AND campus_name = $2
         ORDER BY budgeted_salary DESC
       `,
-        [department]
+        [department, campus]
       );
 
       return rows;

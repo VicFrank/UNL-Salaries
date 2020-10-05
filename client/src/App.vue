@@ -1,10 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <v-toolbar-title>
-        <v-btn to="/" text>Salaries</v-btn>
-        <v-btn to="/departments" text>Departments</v-btn>
-      </v-toolbar-title>
+    <v-app-bar app dark class="dn-color">
+      <v-toolbar-title class="mr-3"> NU Salaries </v-toolbar-title>
+      <v-btn to="/" text>Employees</v-btn>
+      <v-btn to="/departments" text>Departments</v-btn>
       <v-spacer></v-spacer>
 
       <v-btn href="http://www.dailynebraskan.com" target="_blank" text>
@@ -26,3 +25,9 @@ export default {
   name: "App",
 };
 </script>
+
+<style>
+.dn-color {
+  background-color: #ba1f1f !important;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card dark color="blue darken-3 mb-3 filters">
+    <v-card dark class="mb-3 filters">
       <v-container fluid>
         <EmployeeSearch v-model="employeeName" />
       </v-container>
@@ -41,5 +41,6 @@ export default {
 .filters {
   margin: auto;
   max-width: 1200px;
+  background-color: #ba1f1f;
 }
 </style>
